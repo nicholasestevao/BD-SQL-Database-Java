@@ -8,7 +8,7 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="TrabalhoBD.jar" size="10981" download="eager" />
+    <jar href="TrabalhoBD.jar" size="15782" download="eager" />
     <jar href="lib\ojdbc8.jar" size="6980481" download="eager" />
   </resources>
   <jfx:javafx-desc  width="800" height="600" main-class="trabalhobd.TrabalhoBD"  name="TrabalhoBD" />
