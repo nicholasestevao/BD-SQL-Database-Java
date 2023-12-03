@@ -84,7 +84,7 @@ public class CadastrarPlanetasController implements Initializable {
         try{
             Class.forName("oracle.jdbc.driver.OracleDriver");  
             con=DriverManager.getConnection(  
-            "jdbc:oracle:thin:@orclgrad1.icmc.usp.br:1521/pdb_elaine.icmc.usp.br","a12689616","feqziq153");  
+            "jdbc:oracle:thin:@orclgrad1.icmc.usp.br:1521/pdb_elaine.icmc.usp.br","a12732037","li30dukp");  
             Statement stmt=con.createStatement();  
             ResultSet rs=stmt.executeQuery("select nome, galaxia from sistema_planetario");
             cbSistema.setVisibleRowCount(5);
