@@ -44,7 +44,6 @@ public class CadastrarPlanetasController implements Initializable {
     
     private Connection con;
     
-    
     @FXML
     private void cadastrar(ActionEvent event) {
         System.out.println("Cadastrar");
@@ -62,12 +61,12 @@ public class CadastrarPlanetasController implements Initializable {
     private void voltarInicio(ActionEvent event) {
         System.out.println("Voltar");
         try{
-            con.close(); 
             Stage stage = (Stage) bVoltar.getScene().getWindow();
             stage.setTitle("Início");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Inicio.fxml"));
             stage.setScene(new Scene(loader.load()));
             stage.show();
+            con.close(); 
         }catch(Exception e){ System.out.println(e);} 
     }
     
@@ -84,16 +83,20 @@ public class CadastrarPlanetasController implements Initializable {
         try{
             Class.forName("oracle.jdbc.driver.OracleDriver");  
             con=DriverManager.getConnection(  
-            "jdbc:oracle:thin:@orclgrad1.icmc.usp.br:1521/pdb_elaine.icmc.usp.br","a12689616","feqziq153");  
-            Statement stmt=con.createStatement();  
-            ResultSet rs=stmt.executeQuery("select nome, galaxia from sistema_planetario");
+            "jdbc:oracle:thin:@orclgrad1.icmc.usp.br:1521/pdb_elaine.icmc.usp.br","a12732037","li30dukp");  
+            Statement stmt = con.createStatement();  
+            ResultSet rs = stmt.executeQuery("SELECT nome, galaxia FROM sistema_planetario");
             cbSistema.setVisibleRowCount(5);
             while(rs.next()){
                 System.out.println(rs.getString(1)+"  "+rs.getString(2));  
                 SistemaPlanetario s = new SistemaPlanetario(rs.getString(1), rs.getString(2));
                 cbSistema.getItems().add(s);
             }
-        }catch(Exception e){ System.out.println(e);}  
+        }
+        catch(Exception e){
+            System.out.println("Não foi possível conectar ao servidor da ORACLE: ");
+            System.out.println(e.getMessage());
+        }  
     }    
     
 }
