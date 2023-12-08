@@ -21,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
+import javafx.scene.control.Alert;
 
 
 public class CadastrarPlanetasController implements Initializable {
@@ -112,18 +113,40 @@ public class CadastrarPlanetasController implements Initializable {
             SistemaPlanetario sistemaPlanetario = cbSistema.getValue();
             String sistema = sistemaPlanetario.getNome();
             String galaxia = sistemaPlanetario.getGalaxia();
-            String planeta = tfPlaneta.getText();
+            String nome = tfPlaneta.getText();
             int temperatura = Integer.parseInt(tfTemperatura.getText());
             int pressao = Integer.parseInt(tfPressao.getText());
             String clima = tfClima.getText();
 
-            ResultSet resultSet = conexao.executaLinhaSQL("INSERT INTO PLANETA values ((SELECT max(id) + 1 FROM PLANETA), \'"+ sistema +"\', \'"+ galaxia +"\', \'"+ planeta +"\', "+ temperatura +", "+ pressao +", \'"+ clima +"\' )");
+            ResultSet resultSet = conexao.executaLinhaSQL("INSERT INTO PLANETA values ((SELECT max(id) + 1 FROM PLANETA), \'"+ sistema +"\', \'"+ galaxia +"\', \'"+ nome +"\', "+ temperatura +", "+ pressao +", \'"+ clima +"\' )");
             while(resultSet.next()){
                 System.out.println(resultSet.getString(1));  
             }
         }
         catch(SQLException s){
-            System.out.println("ERRO: Não foi possível cadastrar o planeta!");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+        
+            System.out.println(s.getSQLState());
+            System.out.println(s.getErrorCode());
+            System.out.println(s.getMessage());
+
+            String mensagem = "";
+            String titulo = "";
+            if(s.getErrorCode() == 1){
+                mensagem = "Esse planeta já está cadastrado no sistema.";
+                titulo = "Planeta já cadastrado";
+            }
+            else if(s.getErrorCode() == 1400){
+                mensagem = "Não é possível inserir NULL no atributo.";
+                titulo = "Atributo NULL";
+            }
+            else{
+                mensagem = s.getMessage();
+                titulo = "Erro ao cadastrar";
+            }
+            alert.setTitle(titulo);
+            alert.setContentText(mensagem);
+            alert.showAndWait();
         }
     }
     
@@ -131,7 +154,6 @@ public class CadastrarPlanetasController implements Initializable {
     private void voltarInicio(ActionEvent event) {
         System.out.println("Voltar");
         try{
-            //conexao.fechaConexao();
             Stage stage = (Stage)bVoltar.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("Inicio.fxml"));
             Scene scene = new Scene(root);
