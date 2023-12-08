@@ -22,7 +22,7 @@
                </HBox.margin>
             </Label>
 
-            <TextField fx:id="tf_usuario" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="290.0" />
+            <TextField fx:id="tf_usuario" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="290.0" />
          </children>
 
          <padding>
@@ -41,7 +41,7 @@
                </HBox.margin>
             </Label>
 
-            <PasswordField fx:id="pf_senha" prefHeight="25.0" prefWidth="290.0" />
+            <PasswordField fx:id="pf_senha" editable="false" prefHeight="25.0" prefWidth="290.0" />
          </children>
 
          <padding>
@@ -60,7 +60,7 @@
                </HBox.margin>
             </Label>
 
-            <TextField fx:id="tf_host" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="290.0" />
+            <TextField fx:id="tf_host" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="290.0" />
          </children>
 
          <padding>
@@ -79,7 +79,7 @@
                </HBox.margin>
             </Label>
 
-            <TextField fx:id="tf_porta" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="80.0" />
+            <TextField fx:id="tf_porta" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="80.0" />
          </children>
 
          <padding>
@@ -98,7 +98,7 @@
                </HBox.margin>
             </Label>
 
-            <TextField fx:id="tf_servico" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="290.0" />
+            <TextField fx:id="tf_servico" editable="false" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="25.0" prefWidth="290.0" />
          </children>
 
          <padding>
