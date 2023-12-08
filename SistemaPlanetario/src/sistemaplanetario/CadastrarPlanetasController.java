@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLTimeoutException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
@@ -47,7 +49,7 @@ public class CadastrarPlanetasController implements Initializable {
     @FXML
     private ComboBox<SistemaPlanetario> cbSistema;
     
-    private Conexao conexao;
+    private Connection conexao;
     
     
     private AnimationTimer conexaoThread = new AnimationTimer(){
@@ -58,11 +60,10 @@ public class CadastrarPlanetasController implements Initializable {
                 System.out.println(conexao);      
 
                 if(conexao == null){
-                    Stage stage = (Stage)bVoltar.getScene().getWindow();
-                    conexao = (Conexao) stage.getUserData();
-                    conexao.imprimeConexao();
+                    Stage stage = (Stage) bVoltar.getScene().getWindow();
+                    conexao = (Connection) stage.getUserData();
                     
-                    ResultSet resultSet = conexao.executaLinhaSQL("SELECT NOME, GALAXIA FROM SISTEMA_PLANETARIO");
+                    ResultSet resultSet = conexao.prepareStatement("SELECT NOME, GALAXIA FROM SISTEMA_PLANETARIO").executeQuery();
 
                     cbSistema.setVisibleRowCount(5);
 
@@ -70,12 +71,17 @@ public class CadastrarPlanetasController implements Initializable {
                         SistemaPlanetario s = new SistemaPlanetario(resultSet.getString(1), resultSet.getString(2));
                         cbSistema.getItems().add(s);
                     }
-                    
+                    resultSet.close();
                     this.stop();
                     verificaConexaoThread.start();
                 }   
             }
             catch(SQLException s){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Falha na conexão");
+                alert.setContentText("Ocorreu uma falha na conexão");
+                alert.showAndWait();
+
                 System.out.println("ERRO: a conexão SQL apresentou erro - " + s.getMessage());
                 conexao = null;
             }
@@ -86,7 +92,12 @@ public class CadastrarPlanetasController implements Initializable {
         @Override
         public void handle(long now){
             try{
-                if(!conexao.estaConectado()){
+                if(!conexao.isValid(5000)){
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Desconectado");
+                    alert.setContentText("Você foi desconectado!");
+                    alert.showAndWait();
+
                     Stage stage = (Stage)bVoltar.getScene().getWindow();
                     Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
                     Scene scene = new Scene(root);
@@ -114,14 +125,33 @@ public class CadastrarPlanetasController implements Initializable {
             String sistema = sistemaPlanetario.getNome();
             String galaxia = sistemaPlanetario.getGalaxia();
             String nome = tfPlaneta.getText();
-            int temperatura = Integer.parseInt(tfTemperatura.getText());
-            int pressao = Integer.parseInt(tfPressao.getText());
+            float temperatura = Integer.parseInt(tfTemperatura.getText());
+            float pressao = Integer.parseInt(tfPressao.getText());
             String clima = tfClima.getText();
 
-            ResultSet resultSet = conexao.executaLinhaSQL("INSERT INTO PLANETA values ((SELECT max(id) + 1 FROM PLANETA), \'"+ sistema +"\', \'"+ galaxia +"\', \'"+ nome +"\', "+ temperatura +", "+ pressao +", \'"+ clima +"\' )");
-            while(resultSet.next()){
-                System.out.println(resultSet.getString(1));  
-            }
+            PreparedStatement obtemID = conexao.prepareStatement("SELECT MAX (ID) + 1 FROM PLANETA");
+            ResultSet r = obtemID.executeQuery();
+            int id = 1;
+            while(r.next())
+                id = r.getInt(1);
+            r.close();
+
+            PreparedStatement linha = conexao.prepareStatement("INSERT INTO PLANETA values (?,?,?,?,?,?,?)");
+            linha.setInt(1, id);
+            linha.setString(2, sistema);
+            linha.setString(3, galaxia);
+            linha.setString(4, nome);
+            linha.setFloat(5, temperatura);
+            linha.setFloat(6, pressao);
+            linha.setString(7, clima);
+            linha.executeUpdate();
+
+            conexao.commit();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Planeta cadastrado");
+            alert.setHeaderText("Planeta cadastrado.");
+            alert.setContentText("O planeta " + nome + " foi cadastrado!");
+            alert.showAndWait();
         }
         catch(SQLException s){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -147,7 +177,15 @@ public class CadastrarPlanetasController implements Initializable {
             alert.setTitle(titulo);
             alert.setContentText(mensagem);
             alert.showAndWait();
+
+            try{
+                conexao.rollback();
+            }
+            catch(SQLException sq){
+                System.out.println("Rollback não executado!");
+            }
         }
+
     }
     
     @FXML

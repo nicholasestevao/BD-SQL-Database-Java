@@ -44,17 +44,22 @@ public class Conexao {
 
         try{
             Class.forName("oracle.jdbc.driver.OracleDriver"); 
+            String url = "jdbc:oracle:thin:@"+ host + ":" + porta + "/" + servico;
+            System.out.println("URL: " + url);
+            DriverManager.setLoginTimeout(5);
+            con = DriverManager.getConnection(url, usuario, senha);
+            con.setAutoCommit(false);
+            System.out.println("Você foi conectado!");
         }
         catch(ClassNotFoundException e){
             System.out.println("ERRO: não foi possível abrir a biblioteca JDBC. Verifique o arquivo ojdbc11.jar.");
             System.out.println(e.getMessage());
         }
+        catch(SQLException s){
+            System.out.println(s.getMessage());
+        }
 
-        String url = "jdbc:oracle:thin:@"+ host + ":" + porta + "/" + servico;
-        System.out.println("URL: " + url);
-        DriverManager.setLoginTimeout(5);
-        con = DriverManager.getConnection(url, usuario, senha);
-        System.out.println("Você foi conectado!");
+        
         
     } 
 

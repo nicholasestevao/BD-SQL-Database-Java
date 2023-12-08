@@ -28,7 +28,7 @@ public class InicioController implements Initializable {
     @FXML
     private Button bRotas;
 
-    private Conexao conexao;
+    private Connection conexao;
 
     private AnimationTimer conexaoThread = new AnimationTimer(){
         @Override
@@ -36,13 +36,17 @@ public class InicioController implements Initializable {
             System.out.println("Obtendo conexão...");
             if(conexao == null){
                 Stage stage = (Stage) bMissoes.getScene().getWindow();
-                conexao = (Conexao) stage.getUserData();
+                conexao = (Connection) stage.getUserData();
 
                 if(conexao == null)
                     return;
 
-                conexao.imprimeConexao();
-                System.out.println(conexao.retornaConexao());
+                try{
+                    System.out.println(conexao.getClientInfo().toString());
+                }
+                catch(SQLException s){
+                    System.out.println(s.getMessage());
+                }
                 
                 verificaConexaoThread.start();
                 this.stop();
@@ -57,7 +61,7 @@ public class InicioController implements Initializable {
         @Override
         public void handle(long now){
             try{
-                if(!conexao.estaConectado()){
+                if(!conexao.isValid(5000)){
                     System.out.println("Você foi desconectado!");
 
                     Stage stage = (Stage)bMissoes.getScene().getWindow();

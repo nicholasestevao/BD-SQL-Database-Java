@@ -2,6 +2,8 @@ package sistemaplanetario;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -72,11 +74,13 @@ public class LoginController implements Initializable{
             return;
         }
 
-        Conexao conexao = new Conexao(host, porta, servico, usuario, senha);
-        conexao.imprimeConexao();
-
         try{
-            conexao.iniciaConexao();
+            Class.forName("oracle.jdbc.driver.OracleDriver"); 
+            
+            String url = "jdbc:oracle:thin:@"+ host + ":" + porta + "/" + servico;
+            DriverManager.setLoginTimeout(5);
+            Connection conexao = DriverManager.getConnection(url, usuario, senha);
+            conexao.setAutoCommit(false);
 
             Stage stage = (Stage) button_entrar.getScene().getWindow();
             
@@ -88,6 +92,9 @@ public class LoginController implements Initializable{
             stage.setScene(scene);
             stage.show();
 
+        }
+        catch(ClassNotFoundException e){
+            System.out.println("ERRO: não foi possível abrir a biblioteca JDBC. Verifique o arquivo ojdbc11.jar.");
         }
         catch(SQLException s){
             System.out.println("ERRO: não foi possível conectar ao servidor ORACLE.");
