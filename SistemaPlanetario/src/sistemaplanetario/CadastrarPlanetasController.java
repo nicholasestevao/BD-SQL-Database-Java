@@ -131,7 +131,7 @@ public class CadastrarPlanetasController implements Initializable {
     private void voltarInicio(ActionEvent event) {
         System.out.println("Voltar");
         try{
-            conexao.fechaConexao();
+            //conexao.fechaConexao();
             Stage stage = (Stage)bVoltar.getScene().getWindow();
             Parent root = FXMLLoader.load(getClass().getResource("Inicio.fxml"));
             Scene scene = new Scene(root);
@@ -141,9 +141,6 @@ public class CadastrarPlanetasController implements Initializable {
             stage.show();
             stopThreads();
         }
-        catch(SQLException s){ 
-            System.out.println("Não foi possível fechar a conexão.");
-        } 
         catch(IOException e){
             System.out.println("Não foi possível abrir a tela de Inicio.");
         }

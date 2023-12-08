@@ -10,7 +10,6 @@ import java.lang.ClassNotFoundException;
 
 public class Conexao {
     private Connection con;
-    private Statement statement;
 
     private String host;
     private int porta;
@@ -26,7 +25,6 @@ public class Conexao {
         this.senha = senha;
 
         con = null;
-        statement = null;
     }
 
     public boolean estaConectado() throws SQLException{
@@ -56,8 +54,6 @@ public class Conexao {
         System.out.println("URL: " + url);
         DriverManager.setLoginTimeout(5);
         con = DriverManager.getConnection(url, usuario, senha);
-        statement = con.createStatement();
-
         System.out.println("Você foi conectado!");
         
     } 
@@ -73,7 +69,7 @@ public class Conexao {
     public ResultSet executaLinhaSQL(String linha) throws SQLException{
         if(con == null)
             return null;
-        
+        Statement statement = con.createStatement();
         ResultSet resultSet = statement.executeQuery(linha);
         return resultSet;
     }
