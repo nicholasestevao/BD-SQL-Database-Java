@@ -13,6 +13,8 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 import java.util.StringTokenizer;
 import javafx.animation.AnimationTimer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -125,8 +127,9 @@ public class CadastrarPlanetasController implements Initializable {
             String sistema = sistemaPlanetario.getNome();
             String galaxia = sistemaPlanetario.getGalaxia();
             String nome = tfPlaneta.getText();
-            float temperatura = Integer.parseInt(tfTemperatura.getText());
-            float pressao = Integer.parseInt(tfPressao.getText());
+            float temperatura = Float.parseFloat(tfTemperatura.getText());
+            System.out.println(temperatura + " " + tfTemperatura.getText());
+            float pressao = Float.parseFloat(tfPressao.getText());
             String clima = tfClima.getText();
 
             PreparedStatement obtemID = conexao.prepareStatement("SELECT MAX (ID) + 1 FROM PLANETA");
@@ -152,6 +155,11 @@ public class CadastrarPlanetasController implements Initializable {
             alert.setHeaderText("Planeta cadastrado.");
             alert.setContentText("O planeta " + nome + " foi cadastrado!");
             alert.showAndWait();
+
+            tfPlaneta.setText("");
+            tfClima.setText("");
+            tfPressao.setText("");
+            tfTemperatura.setText("");
         }
         catch(SQLException s){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -216,6 +224,26 @@ public class CadastrarPlanetasController implements Initializable {
         System.out.println("CADASTRAR PLANETAS CONTROLLER!");
         conexao = null;
         conexaoThread.start(); 
+
+        tfTemperatura.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, 
+                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    tfTemperatura.setText(newValue.replaceAll("[^\\d.]", ""));
+                }
+            }
+        });
+
+        tfPressao.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, 
+                String newValue) {
+                if (!newValue.matches("\\d*")) {
+                    tfPressao.setText(newValue.replaceAll("[^\\d.]", ""));
+                }
+            }
+        });
     }    
     
 }

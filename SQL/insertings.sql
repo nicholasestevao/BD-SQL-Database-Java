@@ -29,7 +29,7 @@ INSERT INTO ESTRELA (NOME_SISTEMA, GALAXIA, ESTRELA)
 VALUES ('Trappist-1', 'Via Láctea', 'Trappist-1-Death');
 
 INSERT INTO ESTRELA (NOME_SISTEMA, GALAXIA, ESTRELA)
-VALUES ('Kepler-186', 'Via Láctea', 'D-Stranding');
+VALUES ('Kepler-186', 'Via L�ctea', 'D-Stranding');
 
 INSERT INTO ESTRELA (NOME_SISTEMA, GALAXIA, ESTRELA)
 VALUES ('Sistema Gliese-163', 'Dorado', 'Gliese-163');
