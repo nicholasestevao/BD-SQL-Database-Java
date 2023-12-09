@@ -1,4 +1,3 @@
-
 package sistemaplanetario;
 
 import java.io.IOException;
@@ -6,12 +5,10 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -32,64 +29,48 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
 
-public class ConsultarMissoesController implements Initializable {
+public class ConsultarPlanetasController implements Initializable {
+    
     private Conexao conexao;
     
-    private ObservableList<MissaoEspacial> listaMissoes;
+    private ObservableList<Planeta> listaPlanetas;
 
     @FXML
     private Button bVoltar;
-    
-    @FXML
-    private ComboBox<BaseEspacial> cbBase;
-    
-    @FXML
-    private TextField tfNome;
-    
-    @FXML
-    private DatePicker dpData;
-    
+
     @FXML
     private Button bBuscar;
     
-<<<<<<< HEAD
-    private Connection conexao;
-    
-    private ObservableList<MissaoEspacial> listaMissoes;
-    
-=======
->>>>>>> main
     @FXML
-    private TableColumn<MissaoEspacial, String> tcBase;
+    private ComboBox <SistemaPlanetario> cbSistemasPlanetarios;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcNomeMissao;
+    private TextField tfNomePlaneta;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcDataInicio;
+    private TableColumn<Planeta, Integer> tcIDPlaneta;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcDataFim;
+    private TableColumn<Planeta, String> tcSistemaPlanetario;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcDescricao;
+    private TableColumn<Planeta, String> tcGalaxia;
     
     @FXML
-    private TableColumn<MissaoEspacial, Integer> tcTripulacao;
+    private TableColumn<Planeta, String> tcNomePlaneta;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcObjetivo;
+    private TableColumn<Planeta, Float> tcTemperatura;
     
     @FXML
-    private TableColumn<MissaoEspacial, Integer> tcDuracao;
+    private TableColumn<Planeta, Float> tcPressao;
     
     @FXML
-    private TableColumn<MissaoEspacial, Integer> tcPericulosidade;
+    private TableColumn<Planeta, String> tcClima;
     
     @FXML
-    private TableView<MissaoEspacial> tbMissoes;
+    private TableView<Planeta> tbPlanetas;
 
     private AnimationTimer conexaoThread = new AnimationTimer(){
         @Override
@@ -100,19 +81,20 @@ public class ConsultarMissoesController implements Initializable {
 
                 if(conexao == null){
                     Stage stage = (Stage)bVoltar.getScene().getWindow();
-                    conexao = (Connection) stage.getUserData();
+                    conexao = (Conexao) stage.getUserData();
+                    conexao.imprimeConexao();
                     
-                    ResultSet resultSet = conexao.prepareStatement("SELECT PLANETA, NOME FROM BASE_ESPACIAL").executeQuery();
+                    ResultSet resultSet = conexao.executaLinhaSQL("SELECT PLANETA, NOME FROM BASE_ESPACIAL");
                     cbBase.setVisibleRowCount(5);
 
                     while(resultSet.next()){
                         int id = resultSet.getInt(1);
                         String nome = resultSet.getString(2);
 
-                        PreparedStatement linha = conexao.prepareStatement("SELECT NOME FROM PLANETA WHERE ID = ?");
-                        linha.setInt(1, id);
+                        System.out.println(id + " " + nome);
 
-                        ResultSet resultSet2 = linha.executeQuery();
+                        String comando = "SELECT NOME FROM PLANETA WHERE ID = " + id;
+                        ResultSet resultSet2 = conexao.executaLinhaSQL(comando);
                         resultSet2.next();
                         BaseEspacial s = new BaseEspacial(resultSet.getInt(1), resultSet2.getString(1), resultSet.getString(2));
                         cbBase.getItems().add(s);
@@ -133,7 +115,7 @@ public class ConsultarMissoesController implements Initializable {
         @Override
         public void handle(long now){
             try{
-                if(!conexao.isValid(5000)){
+                if(!conexao.estaConectado()){
                     Stage stage = (Stage)bVoltar.getScene().getWindow();
                     Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
                     Scene scene = new Scene(root);
@@ -150,10 +132,8 @@ public class ConsultarMissoesController implements Initializable {
                 System.out.println("Não foi possível gerar a tela de Login.");
                 e.printStackTrace();
             }
-            
         }
     };
-    
 
      @FXML
     private void buscar(ActionEvent event) {
@@ -164,54 +144,34 @@ public class ConsultarMissoesController implements Initializable {
         String select = "SELECT * ";
         String from = "FROM MISSAO_ESPACIAL "; 
         String where = "";
-        
-        String linhaSQL = "SELECT * FROM MISSAO_ESPACIAL ";
 
-        ArrayList atributosLinha = new ArrayList();
-        
+        if(baseOrigem != null){
+            if(where.isEmpty())
+                where += "WHERE ";
+            else
+                where += "AND ";
+            where += "PLANETA_BASE = " + baseOrigem.getPlaneta() + " AND NOME_BASE LIKE \'%" + baseOrigem.getNome() + "%\' ";
+        }
+
+        if(!nomeMissao.isEmpty()){
+            if(where.isEmpty())
+                where += "WHERE ";
+            else
+                where += "AND ";
+            where += "NOME LIKE \'%" + nomeMissao + "%\' ";
+        }
+
+        if(dataMissao != null){
+            if(where.isEmpty())
+                where += "WHERE ";
+            else
+                where += "AND ";
+            where += "DATA_INICIO LIKE TO_DATE(\'" + dataMissao.getDayOfMonth() + "-"  + dataMissao.getMonthValue() + "-" + dataMissao.getYear() + "\',\'dd-mm-yyyy\')";
+        }
+
         try{
-            if(baseOrigem != null){
-                if(!linhaSQL.contains("WHERE"))
-                    linhaSQL += "WHERE ";
-                else
-                    linhaSQL += "AND ";
-                linhaSQL += "PLANETA_BASE = ? AND NOME_BASE LIKE ? ";
-                atributosLinha.add(baseOrigem.getPlaneta());
-                atributosLinha.add(baseOrigem.getNome());
-            }
-
-            if(!nomeMissao.isEmpty()){
-                if(!linhaSQL.contains("WHERE"))
-                    linhaSQL += "WHERE ";
-                else
-                    linhaSQL += "AND ";
-                linhaSQL += "NOME LIKE ? ";
-                atributosLinha.add(nomeMissao);
-            }
-
-            if(dataMissao != null){
-                if(!linhaSQL.contains("WHERE"))
-                    linhaSQL += "WHERE ";
-                else
-                    linhaSQL += "AND ";
-                linhaSQL += "DATA_INICIO LIKE TO_DATE(?,\'dd-mm-yyyy\')";
-                String data = dataMissao.getDayOfMonth() + "-" + dataMissao.getMonthValue() + "-" + dataMissao.getYear();
-                System.out.println(data);
-                atributosLinha.add(data);
-            }
-            
-            System.out.println(linhaSQL);
-
-            PreparedStatement linha = conexao.prepareStatement(linhaSQL);
-            for(int i = 0; i < atributosLinha.size(); i++){
-                if (atributosLinha.get(i) instanceof String)
-                    linha.setString(i+1, (String) atributosLinha.get(i));
-                else
-                    linha.setInt(i+1, (int) atributosLinha.get(i));
-            }
-
-            ResultSet resultSet = linha.executeQuery();
-            conexao.commit();
+            System.out.println(select + from + where);
+            ResultSet resultSet = conexao.executaLinhaSQL(select + from + where);
 
             listaMissoes.clear();
             while(resultSet.next()){
@@ -231,15 +191,7 @@ public class ConsultarMissoesController implements Initializable {
                 listaMissoes.add(missaoEspacial);
             }
             tbMissoes.setItems(listaMissoes);
-        }
-        catch(SQLException s){
-            try{
-                conexao.rollback();
-            }
-            catch(SQLException t){
-                System.out.println("Não foi possível realizar rollback");
-            }
-        } 
+        }catch(Exception e){ System.out.println(e+"oi");} 
     }
     
     @FXML
@@ -254,29 +206,24 @@ public class ConsultarMissoesController implements Initializable {
         }catch(Exception e){ System.out.println(e);} 
     }
 
-    @FXML
-    private void mostrardata(ActionEvent event) {
-        System.out.println(dpData.getValue().getDayOfMonth() + " " + dpData.getValue().getMonthValue() + " " + dpData.getValue().getYear());
-        
-    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("CADASTRAR PLANETAS CONTROLLER!");
+        System.out.println("CONSULTAR PLANETAS CONTROLLER!");
         conexao = null;
         conexaoThread.start(); 
         
-        tcBase.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("nomeBase"));
-        tcNomeMissao.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("nome"));
-        tcDataInicio.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("dataInicio"));
-        tcDataFim.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("dataFim"));
-        tcDescricao.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("descricao"));
-        tcTripulacao.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, Integer>("tamTripulacao"));
-        tcObjetivo.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("objetivo"));
-        tcDuracao.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, Integer>("duracao"));
-        tcPericulosidade.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, Integer>("nivelPerigo"));
+        tcBase.setCellValueFactory(new PropertyValueFactory<Planeta, Integer>("nomeBase"));
+        // tcNomeMissao.setCellValueFactory(new PropertyValueFactory<Planeta, String>("nome"));
+        // tcDataInicio.setCellValueFactory(new PropertyValueFactory<Planeta, String>("dataInicio"));
+        // tcDataFim.setCellValueFactory(new PropertyValueFactory<Planeta, String>("dataFim"));
+        // tcDescricao.setCellValueFactory(new PropertyValueFactory<Planeta, String>("descricao"));
+        // tcTripulacao.setCellValueFactory(new PropertyValueFactory<Planeta, Integer>("tamTripulacao"));
+        // tcObjetivo.setCellValueFactory(new PropertyValueFactory<Planeta, String>("objetivo"));
+        // tcDuracao.setCellValueFactory(new PropertyValueFactory<Planeta, Integer>("duracao"));
+        // tcPericulosidade.setCellValueFactory(new PropertyValueFactory<Planeta, Integer>("nivelPerigo"));
         
-        listaMissoes = FXCollections.observableArrayList();
+        //listaMissoes = FXCollections.observableArrayList();
         
         tbMissoes.setItems(listaMissoes);
     }    
