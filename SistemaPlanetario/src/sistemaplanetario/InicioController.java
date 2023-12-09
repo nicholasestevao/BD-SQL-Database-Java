@@ -16,20 +16,26 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
+/**
+ * Classe InicioController que implementa a interface Initializable.
+ * Esta classe é responsável por controlar as ações na tela inicial.
+ */
 public class InicioController implements Initializable {
 
     @FXML
-    private Button bMissoes;
+    private Button bMissoes; // Botão para consultar missões
     
     @FXML
-    private Button bPlanetas;
+    private Button bPlanetas; // Botão para cadastrar planetas
     
     @FXML
-    private Button bRotas;
+    private Button bRotas; // Botão para consultar rotas
 
-    private Connection conexao;
+    private Connection conexao; // Conexão com o banco de dados
 
+    /**
+     * Thread para obter a conexão com o banco de dados.
+     */
     private AnimationTimer conexaoThread = new AnimationTimer(){
         @Override
         public void handle(long now){
@@ -53,10 +59,12 @@ public class InicioController implements Initializable {
             }
             else
                 conexao = null;
-            
         }
     };
 
+    /**
+     * Thread para verificar a conexão com o banco de dados.
+     */
     private AnimationTimer verificaConexaoThread = new AnimationTimer(){
         @Override
         public void handle(long now){
@@ -83,10 +91,14 @@ public class InicioController implements Initializable {
             catch(Exception ex){
                 System.out.println("aa");
             }
-            
         }
     };
     
+    /**
+     * Método para consultar missões.
+     * Este método é chamado quando o botão 'Consultar Missões' é pressionado.
+     * @param event O evento de ação que ocorreu.
+     */
     @FXML
     private void consultarMissoes(ActionEvent event) {
         System.out.println("Consultar missoes");
@@ -101,6 +113,11 @@ public class InicioController implements Initializable {
         }catch(Exception e){ System.out.println(e);} 
     }
     
+    /**
+     * Método para cadastrar planetas.
+     * Este método é chamado quando o botão 'Cadastrar Planetas' é pressionado.
+     * @param event O evento de ação que ocorreu.
+     */
     @FXML
     private void cadastrarPlanetas(ActionEvent event) {
         System.out.println("Cadastrar planetas");
@@ -115,9 +132,14 @@ public class InicioController implements Initializable {
         }catch(Exception e){ System.out.println(e+"oi");} 
     }
     
+    /**
+     * Método para consultar planetas.
+     * Este método é chamado quando o botão 'Consultar Planetas' é pressionado.
+     * @param event O evento de ação que ocorreu.
+     */
     @FXML
     private void consultarPlanetas(ActionEvent event) {
-         System.out.println("Consultar planetas");
+        System.out.println("Consultar planetas");
         try{
             Stage stage = (Stage) bMissoes.getScene().getWindow();
             stage.setTitle("Consultar planetas");
@@ -129,17 +151,24 @@ public class InicioController implements Initializable {
         }catch(Exception e){ System.out.println(e+"oi");} 
     }
 
+    /**
+     * Método para parar as threads.
+     */
     private void stopThreads(){
         conexaoThread.stop();
         verificaConexaoThread.stop();
     }
 
+    /**
+     * Método para inicializar o controlador após a raiz do elemento ter sido completamente processada.
+     * Este método é chamado para configurar a tela inicial.
+     * @param url A localização usada para resolver caminhos relativos para o objeto raiz, ou null se a localização não é conhecida.
+     * @param rb O recurso usado para localizar o objeto raiz, ou null se o objeto raiz foi localizado.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("INICIO CONTROLLER!");
         conexao = null;
         conexaoThread.start();
-        
     }    
-    
 }

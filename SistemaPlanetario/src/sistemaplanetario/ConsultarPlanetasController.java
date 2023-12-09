@@ -25,48 +25,53 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
 
+/**
+ * Controlador para a tela de consulta de planetas.
+ * Implementa a interface Initializable para inicialização do controlador.
+ */
 public class ConsultarPlanetasController implements Initializable {
     
-    private Connection conexao;
-    
-    private ObservableList<Planeta> listaPlanetas;
+    private Connection conexao; // Conexão com o banco de dados
+
+    private ObservableList<Planeta> listaPlanetas; // Lista observável para armazenar planetas
 
     @FXML
-    private Button bVoltar;
+    private Button bVoltar; // Botão para voltar à tela inicial
 
     @FXML
-    private Button bBuscar;
-    
-    @FXML
-    private ComboBox <SistemaPlanetario> cbSistemasPlanetarios;
-    
-    @FXML
-    private TextField tfNomePlaneta;
-    
-    @FXML
-    private TableColumn<Planeta, Integer> tcIDPlaneta;
-    
-    @FXML
-    private TableColumn<Planeta, String> tcSistemaPlanetario;
-    
-    @FXML
-    private TableColumn<Planeta, String> tcGalaxia;
-    
-    @FXML
-    private TableColumn<Planeta, String> tcNomePlaneta;
-    
-    @FXML
-    private TableColumn<Planeta, Float> tcTemperatura;
-    
-    @FXML
-    private TableColumn<Planeta, Float> tcPressao;
-    
-    @FXML
-    private TableColumn<Planeta, String> tcClima;
-    
-    @FXML
-    private TableView<Planeta> tbPlanetas;
+    private Button bBuscar; // Botão para realizar a busca de planetas
 
+    @FXML
+    private ComboBox<SistemaPlanetario> cbSistemasPlanetarios; // ComboBox para selecionar sistemas planetários
+
+    @FXML
+    private TextField tfNomePlaneta; // Campo de texto para inserir o nome do planeta a ser buscado
+
+    @FXML
+    private TableView<Planeta> tbPlanetas; // Tabelas para exibição dos resultados da busca
+
+    @FXML
+    private TableColumn<Planeta, Integer> tcIDPlaneta; // Coluna ID da tabela
+    
+    @FXML
+    private TableColumn<Planeta, String> tcSistemaPlanetario; // Coluna Sistema Planetário da tabela
+    
+    @FXML
+    private TableColumn<Planeta, String> tcGalaxia; // Coluna Galáxia da tabela
+    
+    @FXML
+    private TableColumn<Planeta, String> tcNomePlaneta; // Coluna Nome da tabela
+    
+    @FXML
+    private TableColumn<Planeta, Float> tcTemperatura; // Coluna Temperatura da tabela
+    
+    @FXML
+    private TableColumn<Planeta, Float> tcPressao; // Coluna Pressao da tabela
+    
+    @FXML
+    private TableColumn<Planeta, String> tcClima; // Coluna Clima da tabela
+
+    // Thread para obter a conexão com o banco de dados
     private AnimationTimer conexaoThread = new AnimationTimer(){
         @Override
         public void handle(long now){
@@ -99,6 +104,7 @@ public class ConsultarPlanetasController implements Initializable {
         }
     };
 
+    // Thread para verificar a validade da conexão
     private AnimationTimer verificaConexaoThread = new AnimationTimer(){
         @Override
         public void handle(long now){
@@ -119,12 +125,16 @@ public class ConsultarPlanetasController implements Initializable {
             catch(IOException e){
                 System.out.println("Não foi possível gerar a tela de Login.");
                 e.printStackTrace();
-            }
-            
+            }  
         }
     };
 
-     @FXML
+    /**
+     * Método para buscar planetas com base nos critérios especificados.
+     *
+     * @param event O evento de clique no botão de busca.
+     */
+    @FXML
     private void buscar(ActionEvent event) {
         String linhaSQL = "SELECT * FROM PLANETA ";
         SistemaPlanetario sistemaPlanetario = cbSistemasPlanetarios.getValue();
@@ -178,13 +188,17 @@ public class ConsultarPlanetasController implements Initializable {
                 listaPlanetas.add(planeta);
             }
             tbPlanetas.setItems(listaPlanetas);
-
         }
         catch(SQLException s){
 
         }
     }
     
+    /**
+     * Método para voltar à tela inicial.
+     *
+     * @param event O evento de clique no botão de voltar.
+     */
     @FXML
     private void voltarInicio(ActionEvent event) {
         System.out.println("Voltar");
@@ -200,11 +214,21 @@ public class ConsultarPlanetasController implements Initializable {
         }catch(Exception e){ System.out.println(e);} 
     }
 
+    /**
+     * Método para parar as threads.
+     */
     private void stopThreads(){
         conexaoThread.stop();
         verificaConexaoThread.stop();
     }
     
+    /**
+     * Método para inicializar o controlador após a raiz do elemento ter sido completamente processada.
+     * Configura as colunas da tabela e inicia a thread de obtenção de conexão.
+     *
+     * @param url A localização usada para resolver caminhos relativos para o objeto raiz, ou null se a localização não é conhecida.
+     * @param rb  O recurso usado para localizar o objeto raiz, ou null se o objeto raiz foi localizado.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         System.out.println("CONSULTAR PLANETAS CONTROLLER!");
@@ -222,6 +246,5 @@ public class ConsultarPlanetasController implements Initializable {
         listaPlanetas = FXCollections.observableArrayList();
         
         tbPlanetas.setItems(listaPlanetas);
-    }    
-    
+    }      
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package sistemaplanetario;
 
 import javafx.application.Application;
@@ -13,11 +8,26 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage; 
 
 /**
- *
- * @author Nicho
+ * Classe principal que inicia o programa.
  */
 public class TrabalhoBD extends Application {
     
+    /**
+     * Método principal que inicia o programa.
+     *
+     * @param args os argumentos da linha de comando.
+     */
+    public static void main(String[] args) {
+        launch(args);
+        
+    }
+
+    /**
+     * Inicia o programa carregando a interface do usuário e exibindo-a na tela.
+     *
+     * @param stage o palco principal da interface do usuário.
+     * @throws Exception se ocorrer um erro ao carregar a interface do usuário.
+     */
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("Login.fxml"));
@@ -31,10 +41,4 @@ public class TrabalhoBD extends Application {
         stage.setResizable(false);
         stage.show();
     }
-
-    public static void main(String[] args) {
-        launch(args);
-        
-    }
-    
 }
