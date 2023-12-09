@@ -66,6 +66,7 @@ public class LoginController implements Initializable{
             return;
         }
         int porta = Integer.parseInt(sPorta);
+        tf_porta.setText(sPorta);
 
         //String servico = tf_servico.getText();
         String servico = "pdb_elaine.icmc.usp.br";
@@ -117,5 +118,16 @@ public class LoginController implements Initializable{
                 }
             }
         });
+
+        String usuario = "a12732037";
+        tf_usuario.setText(usuario);
+        String senha = "li30dukp";
+        pf_senha.setText(senha);
+        String host = "orclgrad1.icmc.usp.br";
+        tf_host.setText(host);
+        String sPorta = "1521";
+        tf_porta.setText(sPorta);
+        String servico = "pdb_elaine.icmc.usp.br";
+        tf_servico.setText(servico);
     }
 }
