@@ -4,14 +4,10 @@ package sistemaplanetario;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -29,10 +25,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.Scene;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
-import javafx.scene.control.Alert;
 
 public class ConsultarMissoesController implements Initializable {
     private Connection conexao;
@@ -105,8 +99,6 @@ public class ConsultarMissoesController implements Initializable {
 
                     while(resultSet.next()){
                         int id = resultSet.getInt(1);
-                        String nome = resultSet.getString(2);
-
                         PreparedStatement linha = conexao.prepareStatement("SELECT NOME FROM PLANETA WHERE ID = ?");
                         linha.setInt(1, id);
 
@@ -156,7 +148,7 @@ public class ConsultarMissoesController implements Initializable {
     };
     
 
-     @FXML
+    @FXML
     private void buscar(ActionEvent event) {
         BaseEspacial baseOrigem = cbBase.getValue();
         String nomeMissao = tfNome.getText();
