@@ -22,7 +22,7 @@
       <Button fx:id="bBuscar" layoutX="373.0" layoutY="112.0" mnemonicParsing="false" onAction="#buscar" text="Buscar" />
       <TableView fx:id="tbMissoes" layoutX="31.0" layoutY="162.0" prefHeight="314.0" prefWidth="758.0">
         <columns>
-          <TableColumn fx:id="tcNomePlaneta" prefWidth="75.0" text="Planeta" />
+          <TableColumn fx:id="tcIdPlaneta" prefWidth="75.0" text="Planeta" />
           <TableColumn fx:id="tcBase" prefWidth="75.0" text="Base" />
             <TableColumn fx:id="tcNomeMissao" prefWidth="75.0" text="Missão" />
             <TableColumn fx:id="tcDataInicio" prefWidth="75.0" text="Início" />

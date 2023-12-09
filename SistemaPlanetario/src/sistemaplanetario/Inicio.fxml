@@ -3,11 +3,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="sistemaplanetario.InicioController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemaplanetario.InicioController">
    <children>
-      <Button fx:id="bPlanetas" layoutX="236.0" layoutY="187.0" mnemonicParsing="false" onAction="#cadastrarPlanetas" text="Cadastro de Planetas" />
-      <Button fx:id="bMissoes" layoutX="238.0" layoutY="146.0" mnemonicParsing="false" onAction="#consultarMissoes" text="Consulta de Missões" />
-      <Button fx:id="bRotas" layoutX="243.0" layoutY="226.0" mnemonicParsing="false" onAction="#cadastrarRotas" text="Cadastro de Rotas" />
+      <Button fx:id="bPlanetas" layoutX="200.0" layoutY="232.0" mnemonicParsing="false" onAction="#cadastrarPlanetas" prefHeight="30.0" prefWidth="200.0" text="Cadastro de Planetas" />
+      <Button fx:id="bMissoes" layoutX="200.0" layoutY="136.0" mnemonicParsing="false" onAction="#consultarMissoes" prefHeight="30.0" prefWidth="200.0" text="Consulta de Missões" />
+      <Button fx:id="bConsultaPlanetas" layoutX="200.0" layoutY="185.0" mnemonicParsing="false" onAction="#consultarPlanetas" prefHeight="30.0" prefWidth="200.0" text="Consulta de Planetas" />
    </children>
 </AnchorPane>

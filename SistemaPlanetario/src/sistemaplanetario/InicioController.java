@@ -28,7 +28,7 @@ public class InicioController implements Initializable {
     @FXML
     private Button bRotas;
 
-    private Conexao conexao;
+    private Connection conexao;
 
     private AnimationTimer conexaoThread = new AnimationTimer(){
         @Override
@@ -36,13 +36,17 @@ public class InicioController implements Initializable {
             System.out.println("Obtendo conexão...");
             if(conexao == null){
                 Stage stage = (Stage) bMissoes.getScene().getWindow();
-                conexao = (Conexao) stage.getUserData();
+                conexao = (Connection) stage.getUserData();
 
                 if(conexao == null)
                     return;
 
-                conexao.imprimeConexao();
-                System.out.println(conexao.retornaConexao());
+                try{
+                    System.out.println(conexao.getClientInfo().toString());
+                }
+                catch(SQLException s){
+                    System.out.println(s.getMessage());
+                }
                 
                 verificaConexaoThread.start();
                 this.stop();
@@ -57,7 +61,7 @@ public class InicioController implements Initializable {
         @Override
         public void handle(long now){
             try{
-                if(!conexao.estaConectado()){
+                if(!conexao.isValid(5000)){
                     System.out.println("Você foi desconectado!");
 
                     Stage stage = (Stage)bMissoes.getScene().getWindow();
@@ -93,6 +97,7 @@ public class InicioController implements Initializable {
             stage.setScene(new Scene(loader.load()));
             stage.setUserData(conexao);
             stage.show();
+            stopThreads();
         }catch(Exception e){ System.out.println(e);} 
     }
     
@@ -111,8 +116,17 @@ public class InicioController implements Initializable {
     }
     
     @FXML
-    private void cadastrarRotas(ActionEvent event) {
-        System.out.println("Cadastrar rotas");
+    private void consultarPlanetas(ActionEvent event) {
+         System.out.println("Consultar planetas");
+        try{
+            Stage stage = (Stage) bMissoes.getScene().getWindow();
+            stage.setTitle("Consultar planetas");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ConsultarPlanetas.fxml"));
+            stage.setUserData(conexao);
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+            stopThreads();
+        }catch(Exception e){ System.out.println(e+"oi");} 
     }
 
     private void stopThreads(){
