@@ -1,6 +1,6 @@
 APLICACAO := ./SistemaPlanetario
 
-all: compile
+all: compile start
 
 compile: $(APLICACAO)/Makefile
 	cd $(APLICACAO) && make all
