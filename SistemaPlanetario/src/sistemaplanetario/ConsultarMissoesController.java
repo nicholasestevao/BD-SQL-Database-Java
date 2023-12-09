@@ -35,7 +35,7 @@ import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 
 public class ConsultarMissoesController implements Initializable {
-    private Conexao conexao;
+    private Connection conexao;
     
     private ObservableList<MissaoEspacial> listaMissoes;
 
@@ -54,13 +54,9 @@ public class ConsultarMissoesController implements Initializable {
     @FXML
     private Button bBuscar;
     
-<<<<<<< HEAD
-    private Connection conexao;
-    
-    private ObservableList<MissaoEspacial> listaMissoes;
-    
-=======
->>>>>>> main
+    @FXML
+    private TableColumn<MissaoEspacial, Integer> tcIdPlaneta;
+
     @FXML
     private TableColumn<MissaoEspacial, String> tcBase;
     
@@ -101,6 +97,8 @@ public class ConsultarMissoesController implements Initializable {
                 if(conexao == null){
                     Stage stage = (Stage)bVoltar.getScene().getWindow();
                     conexao = (Connection) stage.getUserData();
+
+                    cbBase.getItems().add(null);
                     
                     ResultSet resultSet = conexao.prepareStatement("SELECT PLANETA, NOME FROM BASE_ESPACIAL").executeQuery();
                     cbBase.setVisibleRowCount(5);
@@ -125,6 +123,9 @@ public class ConsultarMissoesController implements Initializable {
             catch(SQLException s){
                 System.out.println("ERRO: a conexão SQL apresentou erro - " + s.getMessage());
                 conexao = null;
+            }
+            catch(Exception e){
+                System.out.println(e.getLocalizedMessage());
             }
         }
     };
@@ -160,11 +161,6 @@ public class ConsultarMissoesController implements Initializable {
         BaseEspacial baseOrigem = cbBase.getValue();
         String nomeMissao = tfNome.getText();
         LocalDate dataMissao = dpData.getValue();
-
-        String select = "SELECT * ";
-        String from = "FROM MISSAO_ESPACIAL "; 
-        String where = "";
-        
         String linhaSQL = "SELECT * FROM MISSAO_ESPACIAL ";
 
         ArrayList atributosLinha = new ArrayList();
@@ -211,7 +207,6 @@ public class ConsultarMissoesController implements Initializable {
             }
 
             ResultSet resultSet = linha.executeQuery();
-            conexao.commit();
 
             listaMissoes.clear();
             while(resultSet.next()){
@@ -233,12 +228,7 @@ public class ConsultarMissoesController implements Initializable {
             tbMissoes.setItems(listaMissoes);
         }
         catch(SQLException s){
-            try{
-                conexao.rollback();
-            }
-            catch(SQLException t){
-                System.out.println("Não foi possível realizar rollback");
-            }
+
         } 
     }
     
@@ -247,10 +237,13 @@ public class ConsultarMissoesController implements Initializable {
         System.out.println("Voltar");
         try{
             Stage stage = (Stage) bVoltar.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("Inicio.fxml"));
+            Scene scene = new Scene(root);
             stage.setTitle("Início");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Inicio.fxml"));
-            stage.setScene(new Scene(loader.load()));
+            stage.setScene(scene);
+            stage.setUserData((Connection) conexao);
             stage.show();
+            stopThreads();
         }catch(Exception e){ System.out.println(e);} 
     }
 
@@ -259,6 +252,11 @@ public class ConsultarMissoesController implements Initializable {
         System.out.println(dpData.getValue().getDayOfMonth() + " " + dpData.getValue().getMonthValue() + " " + dpData.getValue().getYear());
         
     }
+
+    private void stopThreads(){
+        conexaoThread.stop();
+        verificaConexaoThread.stop();
+    }
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -266,6 +264,7 @@ public class ConsultarMissoesController implements Initializable {
         conexao = null;
         conexaoThread.start(); 
         
+        tcIdPlaneta.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, Integer>("id"));
         tcBase.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("nomeBase"));
         tcNomeMissao.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("nome"));
         tcDataInicio.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("dataInicio"));

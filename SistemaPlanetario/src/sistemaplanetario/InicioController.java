@@ -97,6 +97,7 @@ public class InicioController implements Initializable {
             stage.setScene(new Scene(loader.load()));
             stage.setUserData(conexao);
             stage.show();
+            stopThreads();
         }catch(Exception e){ System.out.println(e);} 
     }
     
@@ -115,8 +116,17 @@ public class InicioController implements Initializable {
     }
     
     @FXML
-    private void cadastrarRotas(ActionEvent event) {
-        System.out.println("Cadastrar rotas");
+    private void consultarPlanetas(ActionEvent event) {
+         System.out.println("Consultar planetas");
+        try{
+            Stage stage = (Stage) bMissoes.getScene().getWindow();
+            stage.setTitle("Consultar planetas");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ConsultarPlanetas.fxml"));
+            stage.setUserData(conexao);
+            stage.setScene(new Scene(loader.load()));
+            stage.show();
+            stopThreads();
+        }catch(Exception e){ System.out.println(e+"oi");} 
     }
 
     private void stopThreads(){
