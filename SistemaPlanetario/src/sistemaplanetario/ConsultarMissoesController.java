@@ -159,16 +159,15 @@ public class ConsultarMissoesController implements Initializable {
      @FXML
     private void buscar(ActionEvent event) {
         try{
+            dpData.commitValue();
             BaseEspacial baseOrigem = cbBase.getValue();
             String nomeMissao = tfNome.getText();
             LocalDate dataMissao = null;
 
             if(dpData.getValue() != null)
                 dataMissao = dpData.getValue();
-            else{
-                dpData.setValue(null); 
-                dpData.commitValue();
-            }        
+            else
+                dpData.setValue(null);    
 
             String linhaSQL = "SELECT * FROM MISSAO_ESPACIAL ";
 
