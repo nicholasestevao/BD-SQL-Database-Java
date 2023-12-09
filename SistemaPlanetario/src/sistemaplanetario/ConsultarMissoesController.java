@@ -162,13 +162,14 @@ public class ConsultarMissoesController implements Initializable {
             BaseEspacial baseOrigem = cbBase.getValue();
             String nomeMissao = tfNome.getText();
             LocalDate dataMissao = null;
+
             if(dpData.getValue() != null)
                 dataMissao = dpData.getValue();
             else{
-                dpData.setPromptText(""); 
                 dpData.setValue(null); 
                 dpData.commitValue();
-            }           
+            }        
+
             String linhaSQL = "SELECT * FROM MISSAO_ESPACIAL ";
 
             ArrayList atributosLinha = new ArrayList();
