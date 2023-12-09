@@ -1,13 +1,13 @@
 package sistemaplanetario;
 
 public class Planeta {
-    int id;
-    String sistemaPlanetario;
-    String galaxia;
-    String nome;
-    float temperatura;
-    float pressao;
-    String clima;
+    private int id;
+    private String sistemaPlanetario;
+    private String galaxia;
+    private String nome;
+    private float temperatura;
+    private float pressao;
+    private String clima;
 
     public Planeta(int id, String sistemaPlanetario, String galaxia, String nome, float temperatura, float pressao, String clima){
         this.id = id;
