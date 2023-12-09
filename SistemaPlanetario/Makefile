@@ -42,9 +42,10 @@ Login: $(SRC)/LoginController.java
 
 TrabalhoBD: $(SRC)/TrabalhoBD.java
 	javac --module-path $(FX_PATH) --add-modules javafx.controls,javafx.fxml -d $(CLASSES) -classpath "$(CLASSES);$(JDBC)" $(SRC)/TrabalhoBD.java
+	cp src/img/icone.png $(CLASSES)
 
 start:
 	cd $(CLASSES) && java --module-path ../../$(FX_PATH) --add-modules javafx.controls,javafx.fxml -cp ".;../../$(JDBC)" $(JBUILD)TrabalhoBD $(JBUILD)LoginController $(JBUILD)InicioController $(JBUILD)ConsultarMissoesController $(JBUILD)ConsultarPlanetasController $(JBUILD)CadastrarPlanetasController $(JBUILD)MissaoEspacial $(JBUILD)SistemaPlanetario $(JBUILD)BaseEspacial $(JBUILD)Planeta
 
 clean: $(CLASSES)/sistemaplanetario
-	rm -r $(CLASSES)/sistemaplanetario
+	rm -r $(CLASSES)/sistemaplanetario && rm $(CLASSES)/icone.png

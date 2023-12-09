@@ -1,3 +1,4 @@
 *.class
 SistemaPlanetario/build/classes/sistemaplanetario/*.fxml
+SistemaPlanetario/build/classes/*.png
 .vscode
