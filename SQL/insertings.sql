@@ -29,7 +29,7 @@ INSERT INTO ESTRELA (NOME_SISTEMA, GALAXIA, ESTRELA)
 VALUES ('Trappist-1', 'Via Láctea', 'Trappist-1-Death');
 
 INSERT INTO ESTRELA (NOME_SISTEMA, GALAXIA, ESTRELA)
-VALUES ('Kepler-186', 'Via Láctea', 'D-Stranding');
+VALUES ('Kepler-186', 'Via L�ctea', 'D-Stranding');
 
 INSERT INTO ESTRELA (NOME_SISTEMA, GALAXIA, ESTRELA)
 VALUES ('Sistema Gliese-163', 'Dorado', 'Gliese-163');
@@ -227,10 +227,10 @@ VALUES (5, 'Vírus Espacial');
 
 -- alimentando a tabela RECURSO_NATURAL com dados
 INSERT INTO RECURSO_NATURAL (NOME, TIPO)
-VALUES ('Água', 'Líquido');
+VALUES ('�?gua', 'Líquido');
 
 INSERT INTO RECURSO_NATURAL (NOME, TIPO)
-VALUES ('Água', 'Sólido');
+VALUES ('�?gua', 'Sólido');
 
 INSERT INTO RECURSO_NATURAL (NOME, TIPO)
 VALUES ('Minério de Ferro', 'Mineral'); 
@@ -262,7 +262,7 @@ INSERT INTO PRODUTO (NOME, ORIGEM, DESCRICAO, PRECO, PESO)
 VALUES ('Semente Extraterrestre', 'Planeta X', 'Uma semente misteriosa de uma planta alienígena. Ótima oportunidade para estudos botânicos.', 299.99, 0.5);
 
 INSERT INTO PRODUTO (NOME, ORIGEM, DESCRICAO, PRECO, PESO)
-VALUES('Água Extraterrestre', 'Europa (Lua de Júpiter)', 'Água líquida e pura, coletada da lua Europa de Júpiter. Uma raridade intergaláctica.', 149.99, 1.5);
+VALUES('�?gua Extraterrestre', 'Europa (Lua de Júpiter)', '�?gua líquida e pura, coletada da lua Europa de Júpiter. Uma raridade intergaláctica.', 149.99, 1.5);
   
 INSERT INTO PRODUTO (NOME, ORIGEM, DESCRICAO, PRECO, PESO)
 VALUES ('Fósseis Marcianos', 'Marte', 'Fósseis únicos de criaturas antigas de Marte.', 349.99, 3.0);
@@ -273,10 +273,10 @@ VALUES ('Amostra de Gás Nebuloso', 'Nebulosa Órion', 'Uma amostra de gás nebu
 
 -- alimentando a tabela RECURSO_PLANETA com dados
 INSERT INTO RECURSO_PLANETA (PLANETA, NOME_REC, tipo_REC, ESTIMATIVA)
-VALUES (1, 'Água', 'Líquido',1386);
+VALUES (1, '�?gua', 'Líquido',1386);
 
 INSERT INTO RECURSO_PLANETA (PLANETA, NOME_REC, tipo_REC, ESTIMATIVA)
-VALUES (2, 'Água', 'Sólido',978);
+VALUES (2, '�?gua', 'Sólido',978);
 
 INSERT INTO RECURSO_PLANETA (PLANETA, NOME_REC, tipo_REC, ESTIMATIVA)
 VALUES (3, 'Titânio', 'Metal',451);
@@ -314,7 +314,7 @@ INSERT INTO PRODUTO_CIVILIZACAO(NOME_CIV, CATEG_CIV, NOME_PRODUTO, ORIGEM_PRODUT
 VALUES ('Marciana', 'H', 'Fósseis Marcianos', 'Marte');
 
 INSERT INTO PRODUTO_CIVILIZACAO(NOME_CIV, CATEG_CIV, NOME_PRODUTO, ORIGEM_PRODUTO)
-VALUES ('Marciana', 'H', 'Água Extraterrestre', 'Europa (Lua de Júpiter)');
+VALUES ('Marciana', 'H', '�?gua Extraterrestre', 'Europa (Lua de Júpiter)');
 
 INSERT INTO PRODUTO_CIVILIZACAO(NOME_CIV, CATEG_CIV, NOME_PRODUTO, ORIGEM_PRODUTO)
 VALUES ('Trappistiana', 'H', 'Amostra de Gás Nebuloso', 'Nebulosa Órion');

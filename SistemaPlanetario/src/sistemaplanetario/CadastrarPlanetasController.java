@@ -155,6 +155,11 @@ public class CadastrarPlanetasController implements Initializable {
             alert.setHeaderText("Planeta cadastrado.");
             alert.setContentText("O planeta " + nome + " foi cadastrado!");
             alert.showAndWait();
+
+            tfPlaneta.setText("");
+            tfClima.setText("");
+            tfPressao.setText("");
+            tfTemperatura.setText("");
         }
         catch(SQLException s){
             Alert alert = new Alert(Alert.AlertType.ERROR);
