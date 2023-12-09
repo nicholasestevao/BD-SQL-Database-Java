@@ -10,13 +10,13 @@
 
 <AnchorPane id="AnchorPane" prefHeight="524.0" prefWidth="836.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sistemaplanetario.ConsultarPlanetasController">
    <children>
-      <Label layoutX="351.0" layoutY="35.0" text="Consultar Planetas" />
+      <Label layoutX="368.0" layoutY="26.0" text="Consultar Planetas" />
       <Button fx:id="bVoltar" layoutX="14.0" layoutY="484.0" mnemonicParsing="false" onAction="#voltarInicio" text="Voltar" />
       <Label layoutX="31.0" layoutY="70.0" text="Sistema Planetários:" />
       <Label layoutX="449.0" layoutY="70.0" text="Nome Planeta:" />
       <TextField fx:id="tfNomePlaneta" alignment="CENTER" layoutX="539.0" layoutY="65.0" prefHeight="26.0" prefWidth="250.0" />
       <ComboBox fx:id="cbSistemasPlanetarios" layoutX="148.0" layoutY="65.0" prefHeight="26.0" prefWidth="250.0" />
-      <Button fx:id="bBuscar" layoutX="373.0" layoutY="112.0" mnemonicParsing="false" onAction="#buscar" text="Buscar" />
+      <Button fx:id="bBuscar" layoutX="392.0" layoutY="115.0" mnemonicParsing="false" onAction="#buscar" text="Buscar" />
       <TableView fx:id="tbPlanetas" layoutX="31.0" layoutY="162.0" prefHeight="314.0" prefWidth="758.0">
         <columns>
           <TableColumn fx:id="tcIDPlaneta" prefWidth="58.40002632141113" text="ID" />

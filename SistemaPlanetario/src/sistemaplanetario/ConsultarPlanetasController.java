@@ -32,54 +32,45 @@ import javafx.stage.Stage;
 
 public class ConsultarPlanetasController implements Initializable {
     
+    private Conexao conexao;
+    
+    private ObservableList<Planeta> listaPlanetas;
+
     @FXML
     private Button bVoltar;
-    
-    @FXML
-    private ComboBox<BaseEspacial> cbBase;
-    
-    @FXML
-    private TextField tfNome;
-    
-    @FXML
-    private DatePicker dpData;
-    
+
     @FXML
     private Button bBuscar;
     
-    private Conexao conexao;
-    
-    private ObservableList<MissaoEspacial> listaMissoes;
+    @FXML
+    private ComboBox <SistemaPlanetario> cbSistemasPlanetarios;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcBase;
+    private TextField tfNomePlaneta;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcNomeMissao;
+    private TableColumn<Planeta, Integer> tcIDPlaneta;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcDataInicio;
+    private TableColumn<Planeta, String> tcSistemaPlanetario;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcDataFim;
+    private TableColumn<Planeta, String> tcGalaxia;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcDescricao;
+    private TableColumn<Planeta, String> tcNomePlaneta;
     
     @FXML
-    private TableColumn<MissaoEspacial, Integer> tcTripulacao;
+    private TableColumn<Planeta, Float> tcTemperatura;
     
     @FXML
-    private TableColumn<MissaoEspacial, String> tcObjetivo;
+    private TableColumn<Planeta, Float> tcPressao;
     
     @FXML
-    private TableColumn<MissaoEspacial, Integer> tcDuracao;
+    private TableColumn<Planeta, String> tcClima;
     
     @FXML
-    private TableColumn<MissaoEspacial, Integer> tcPericulosidade;
-    
-    @FXML
-    private TableView<MissaoEspacial> tbMissoes;
+    private TableView<Planeta> tbPlanetas;
 
     private AnimationTimer conexaoThread = new AnimationTimer(){
         @Override
@@ -141,10 +132,8 @@ public class ConsultarPlanetasController implements Initializable {
                 System.out.println("Não foi possível gerar a tela de Login.");
                 e.printStackTrace();
             }
-            
         }
     };
-    
 
      @FXML
     private void buscar(ActionEvent event) {
@@ -217,30 +206,24 @@ public class ConsultarPlanetasController implements Initializable {
         }catch(Exception e){ System.out.println(e);} 
     }
 
-    @FXML
-    private void mostrardata(ActionEvent event) {
-        System.out.println(dpData.getValue().getDayOfMonth() + " " + dpData.getValue().getMonthValue() + " " + dpData.getValue().getYear());
-        
-    }
-
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("CADASTRAR PLANETAS CONTROLLER!");
+        System.out.println("CONSULTAR PLANETAS CONTROLLER!");
         conexao = null;
         conexaoThread.start(); 
         
-        tcBase.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("nomeBase"));
-        tcNomeMissao.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("nome"));
-        tcDataInicio.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("dataInicio"));
-        tcDataFim.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("dataFim"));
-        tcDescricao.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("descricao"));
-        tcTripulacao.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, Integer>("tamTripulacao"));
-        tcObjetivo.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, String>("objetivo"));
-        tcDuracao.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, Integer>("duracao"));
-        tcPericulosidade.setCellValueFactory(new PropertyValueFactory<MissaoEspacial, Integer>("nivelPerigo"));
+        tcBase.setCellValueFactory(new PropertyValueFactory<Planeta, Integer>("nomeBase"));
+        // tcNomeMissao.setCellValueFactory(new PropertyValueFactory<Planeta, String>("nome"));
+        // tcDataInicio.setCellValueFactory(new PropertyValueFactory<Planeta, String>("dataInicio"));
+        // tcDataFim.setCellValueFactory(new PropertyValueFactory<Planeta, String>("dataFim"));
+        // tcDescricao.setCellValueFactory(new PropertyValueFactory<Planeta, String>("descricao"));
+        // tcTripulacao.setCellValueFactory(new PropertyValueFactory<Planeta, Integer>("tamTripulacao"));
+        // tcObjetivo.setCellValueFactory(new PropertyValueFactory<Planeta, String>("objetivo"));
+        // tcDuracao.setCellValueFactory(new PropertyValueFactory<Planeta, Integer>("duracao"));
+        // tcPericulosidade.setCellValueFactory(new PropertyValueFactory<Planeta, Integer>("nivelPerigo"));
         
-        listaMissoes = FXCollections.observableArrayList();
+        //listaMissoes = FXCollections.observableArrayList();
         
         tbMissoes.setItems(listaMissoes);
     }    

@@ -32,7 +32,10 @@ import javafx.scene.Parent;
 import javafx.stage.Stage;
 
 public class ConsultarMissoesController implements Initializable {
+    private Conexao conexao;
     
+    private ObservableList<MissaoEspacial> listaMissoes;
+
     @FXML
     private Button bVoltar;
     
@@ -47,10 +50,6 @@ public class ConsultarMissoesController implements Initializable {
     
     @FXML
     private Button bBuscar;
-    
-    private Conexao conexao;
-    
-    private ObservableList<MissaoEspacial> listaMissoes;
     
     @FXML
     private TableColumn<MissaoEspacial, String> tcBase;
@@ -223,7 +222,6 @@ public class ConsultarMissoesController implements Initializable {
         System.out.println(dpData.getValue().getDayOfMonth() + " " + dpData.getValue().getMonthValue() + " " + dpData.getValue().getYear());
         
     }
-
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
