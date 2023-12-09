@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -150,14 +151,21 @@ public class ConsultarMissoesController implements Initializable {
 
     @FXML
     private void buscar(ActionEvent event) {
-        BaseEspacial baseOrigem = cbBase.getValue();
-        String nomeMissao = tfNome.getText();
-        LocalDate dataMissao = dpData.getValue();
-        String linhaSQL = "SELECT * FROM MISSAO_ESPACIAL ";
-
-        ArrayList atributosLinha = new ArrayList();
-        
         try{
+            dpData.commitValue();
+            BaseEspacial baseOrigem = cbBase.getValue();
+            String nomeMissao = tfNome.getText();
+            LocalDate dataMissao = null;
+
+            if(dpData.getValue() != null)
+                dataMissao = dpData.getValue();
+            else
+                dpData.setValue(null);    
+
+            String linhaSQL = "SELECT * FROM MISSAO_ESPACIAL ";
+
+            ArrayList atributosLinha = new ArrayList();
+        
             if(baseOrigem != null){
                 if(!linhaSQL.contains("WHERE"))
                     linhaSQL += "WHERE ";
@@ -222,6 +230,13 @@ public class ConsultarMissoesController implements Initializable {
         catch(SQLException s){
 
         } 
+        catch(DateTimeParseException d){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro na data.");
+            alert.setHeaderText("Você inseriu um valor inválido na data.");
+            alert.setContentText(d.getLocalizedMessage());
+            alert.showAndWait();
+        }
     }
     
     @FXML

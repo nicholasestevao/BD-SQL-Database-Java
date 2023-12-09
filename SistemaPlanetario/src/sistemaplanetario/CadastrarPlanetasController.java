@@ -7,6 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLTimeoutException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ResourceBundle;
 import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
@@ -120,12 +123,16 @@ public class CadastrarPlanetasController implements Initializable {
     private void cadastrar(ActionEvent event) {
         try{
             SistemaPlanetario sistemaPlanetario = cbSistema.getValue();
-            String sistema = sistemaPlanetario.getNome();
-            String galaxia = sistemaPlanetario.getGalaxia();
+            String sistema = "";
+            String galaxia = "";
+            if(sistemaPlanetario != null){
+                sistema = sistemaPlanetario.getNome();
+                galaxia = sistemaPlanetario.getGalaxia();
+            }
+
             String nome = tfPlaneta.getText();
-            float temperatura = Float.parseFloat(tfTemperatura.getText());
-            System.out.println(temperatura + " " + tfTemperatura.getText());
-            float pressao = Float.parseFloat(tfPressao.getText());
+
+            
             String clima = tfClima.getText();
 
             PreparedStatement obtemID = conexao.prepareStatement("SELECT MAX (ID) + 1 FROM PLANETA");
@@ -140,8 +147,17 @@ public class CadastrarPlanetasController implements Initializable {
             linha.setString(2, sistema);
             linha.setString(3, galaxia);
             linha.setString(4, nome);
-            linha.setFloat(5, temperatura);
-            linha.setFloat(6, pressao);
+
+            if(tfTemperatura.getText().isEmpty())
+                linha.setNull(5, Types.FLOAT);
+            else
+                linha.setFloat(5, Float.parseFloat(tfTemperatura.getText()));
+
+            if(tfPressao.getText().isEmpty())
+                linha.setNull(6, Types.FLOAT);
+            else
+                linha.setFloat(6, Float.parseFloat(tfPressao.getText()));
+
             linha.setString(7, clima);
             linha.executeUpdate();
 
@@ -156,6 +172,7 @@ public class CadastrarPlanetasController implements Initializable {
             tfClima.setText("");
             tfPressao.setText("");
             tfTemperatura.setText("");
+            cbSistema.setValue(null);
         }
         catch(SQLException s){
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -171,7 +188,7 @@ public class CadastrarPlanetasController implements Initializable {
                 titulo = "Planeta já cadastrado";
             }
             else if(s.getErrorCode() == 1400){
-                mensagem = "Não é possível inserir NULL no atributo.";
+                mensagem = "Você tentou inserir NULL num atributo NOT NULL.";
                 titulo = "Atributo NULL";
             }
             else{
@@ -179,7 +196,8 @@ public class CadastrarPlanetasController implements Initializable {
                 titulo = "Erro ao cadastrar";
             }
             alert.setTitle(titulo);
-            alert.setContentText(mensagem);
+            alert.setHeaderText(mensagem);
+            alert.setContentText(s.getLocalizedMessage());
             alert.showAndWait();
 
             try{
