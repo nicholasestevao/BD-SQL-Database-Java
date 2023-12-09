@@ -246,6 +246,7 @@ public class ConsultarMissoesController implements Initializable {
             alert.setHeaderText("Você inseriu um valor inválido na data.");
             alert.setContentText(d.getLocalizedMessage());
             alert.showAndWait();
+            return;
         }
     }
     
