@@ -9,7 +9,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*; 
 
 /**
@@ -25,6 +31,8 @@ public class TrabalhoBD extends Application {
         Scene scene = new Scene(root);
 
         stage.setTitle("Login");
+        stage.getIcons().add(new Image("icone.png"));
+
         stage.setScene(scene);
         stage.show();
     }
